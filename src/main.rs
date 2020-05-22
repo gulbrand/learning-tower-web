@@ -26,7 +26,7 @@ impl_web! {
 }
 
 pub fn main() {
-    let addr = "127.0.0.1:8080".parse().expect("Invalid address");
+    let addr = "0.0.0.0:8000".parse().expect("Invalid address");
     println!("Listening on http://{}", addr);
 
     ServiceBuilder::new()

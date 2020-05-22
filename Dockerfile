@@ -1,12 +1,21 @@
-FROM rust as builder
-WORKDIR /usr/src/swagger-demo
-COPY . .
-RUN cargo install --path .
+# -*- mode: dockerfile -*-
+#
+# My attempt to get a rust-musl-builder working
 
-FROM debian
-# RUN apt-get update && apt-get install -y extra-runtime-dependencies
-COPY --from=builder /usr/local/cargo/bin/swagger-demo /usr/local/bin/swagger-demo
+ARG BASE_IMAGE=ekidd/rust-musl-builder:latest
 
-EXPOSE 8080
+FROM ${BASE_IMAGE} as builder
 
-CMD ["/usr/local/bin/swagger-demo"]
+ADD --chown=rust:rust . ./
+
+RUN cargo build --release
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+COPY --from=builder \
+    /home/rust/src/target/x86_64-unknown-linux-musl/release/learning-tower-web \
+    /usr/local/bin
+
+EXPOSE 8000
+
+CMD ["/usr/local/bin/learning-tower-web"]
