@@ -22,6 +22,15 @@ docker-run-image: docker-image-build
 docker-build-dev-image:
 	docker build . -t gulbrand/learning-tower-web-dev -f dev/Dockerfile
 
+docker-build-web-client-image:
+	docker build . -t gulbrand/learning-tower-web-client -f web-client-Dockerfile
+
+docker-image-tag-web-client:
+	docker image tag gulbrand/learning-tower-web-client persistence.local:5000/gulbrand/learning-tower-web-client:0.4.0
+
+docker-image-push-web-client:
+	docker push persistence.local:5000/gulbrand/learning-tower-web-client:0.4.0
+
 docker-start-dev-container:
 	docker run -it -p8000:8000 -v "$(PWD):/home/tower-web-dev-workspace" gulbrand/learning-tower-web-dev
 

@@ -10,3 +10,4 @@ edition = "2018"
 tower-web = "0.3.7"
 tokio = "0.2.21"
 serde = "1.0.110"
+reqwest = { version = "0.10", features = ["blocking", "json"] }

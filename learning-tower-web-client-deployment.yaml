@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: learning-tower-web-client
+spec:
+    selector:
+        matchLabels:
+            run: learning-tower-web-client
+    replicas: 2
+    template:
+        metadata:
+            labels:
+                run: learning-tower-web-client
+        spec:
+            containers:
+            - name: learning-tower-web-client
+              image: persistence.local:5000/gulbrand/learning-tower-web-client:0.4.0
+              ports:
+              - containerPort: 8000
