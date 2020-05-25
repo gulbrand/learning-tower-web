@@ -18,6 +18,7 @@ impl_web! {
         #[get("/")]
         #[content_type("json")]
         fn hello_world(&self) -> Result<HelloResponse, ()> {
+            println!("responding to request");
             Ok(HelloResponse {
                 message: "hello world",
             })
