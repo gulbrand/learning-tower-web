@@ -2,13 +2,14 @@
 extern crate tower_web;
 extern crate tokio;
 
-use tower_web::ServiceBuilder;
+use tower_web::{ServiceBuilder};
+use tower_web::middleware::cors::{CorsBuilder, AllowedOrigins};
 use tokio::prelude::*;
 
 #[derive(Clone, Debug)]
 struct HelloWorld;
 
-#[derive(Response)]
+#[derive(Response, Debug)]
 struct HelloResponse {
     message: &'static str,
 }
@@ -18,20 +19,25 @@ impl_web! {
         #[get("/")]
         #[content_type("json")]
         fn hello_world(&self) -> Result<HelloResponse, ()> {
-            println!("responding to request");
-            Ok(HelloResponse {
-                message: "hello world",
-            })
+            let message = "hello from app 1";
+            let response = HelloResponse {message};
+            println!("responding to request with {:?}", response);
+            Ok(response)
         }
     }
 }
 
 pub fn main() {
-    let addr = "0.0.0.0:8000".parse().expect("Invalid address");
+    let addr = "0.0.0.0:3001".parse().expect("Invalid address");
     println!("Listening on http://{}", addr);
 
     ServiceBuilder::new()
         .resource(HelloWorld)
+        .middleware(
+            CorsBuilder::new()
+                .allow_origins(AllowedOrigins::Any { allow_null: true })
+                .build()
+        )
         .run(&addr)
         .unwrap();
 }

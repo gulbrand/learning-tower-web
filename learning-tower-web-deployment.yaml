@@ -14,6 +14,6 @@ spec:
         spec:
             containers:
             - name: learning-tower-web
-              image: persistence.local:5000/gulbrand/learning-tower-web:0.2.0
+              image: gulbrand/learning-tower-web
               ports:
               - containerPort: 8000
